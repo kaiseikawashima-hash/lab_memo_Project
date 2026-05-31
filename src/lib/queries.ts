@@ -1,4 +1,5 @@
 import { getSupabase, Note, Seminar, Session, SessionWithCounts } from "./supabase";
+import { canonicalSeminarName, seminarDescription } from "./utils";
 
 const initialSeminars = [
   {
@@ -36,11 +37,30 @@ export async function getSeminars() {
 
 function uniqueSeminars(seminars: Seminar[]) {
   const seen = new Set<string>();
-  return seminars.filter((seminar) => {
-    if (seen.has(seminar.name)) return false;
-    seen.add(seminar.name);
+  return seminars.map(normalizeSeminar).filter((seminar) => {
+    const canonicalName = canonicalSeminarName(seminar.name);
+    if (seen.has(canonicalName)) return false;
+    seen.add(canonicalName);
     return true;
   });
+}
+
+function normalizeSeminar<T extends Pick<Seminar, "name" | "description" | "color">>(seminar: T) {
+  const name = canonicalSeminarName(seminar.name);
+  return {
+    ...seminar,
+    name,
+    description: seminarDescription(name, seminar.description),
+    color: seminar.color || (name === "数理最適化ゼミ" ? "#a78bfa" : name === "Python 機械学習ゼミ" ? "#38bdf8" : "#22d3ee")
+  };
+}
+
+function normalizeSessionSeminar<T extends { seminar?: Pick<Seminar, "id" | "name" | "color"> | null }>(value: T) {
+  if (!value.seminar) return value;
+  return {
+    ...value,
+    seminar: normalizeSeminar({ ...value.seminar, description: null })
+  };
 }
 
 export async function getSessions() {
@@ -57,7 +77,8 @@ export async function getSessions() {
     .select("session_id,is_important,is_before_talk");
   if (noteError) throw new Error(noteError.message);
 
-  return (data as SessionWithCounts[]).map((session) => {
+  return (data as SessionWithCounts[]).map((rawSession) => {
+    const session = normalizeSessionSeminar(rawSession);
     const ownNotes = notes.filter((note) => note.session_id === session.id);
     return {
       ...session,
@@ -75,7 +96,7 @@ export async function getSession(id: string) {
     .eq("id", id)
     .single();
   if (error) throw new Error(error.message);
-  return data as Session & { seminar: Pick<Seminar, "id" | "name" | "color"> };
+  return normalizeSessionSeminar(data as Session & { seminar: Pick<Seminar, "id" | "name" | "color"> });
 }
 
 export async function getNotes(sessionId?: string) {
@@ -88,9 +109,12 @@ export async function getNotes(sessionId?: string) {
 
   const { data, error } = await query;
   if (error) throw new Error(error.message);
-  return data as (Note & {
+  return (data as (Note & {
     session: Session & { seminar: Pick<Seminar, "id" | "name" | "color"> };
-  })[];
+  })[]).map((note) => ({
+    ...note,
+    session: normalizeSessionSeminar(note.session)
+  }));
 }
 
 export async function searchAll(query: string, filter?: string) {
@@ -116,8 +140,10 @@ export async function searchAll(query: string, filter?: string) {
   if (notes.error) throw new Error(notes.error.message);
 
   return {
-    sessions: (term ? sessions.data : []) as SessionWithCounts[],
-    notes: (term || filter ? notes.data : []) as (Note & {
+    sessions: (term ? (sessions.data as SessionWithCounts[]).map(normalizeSessionSeminar) : []) as SessionWithCounts[],
+    notes: (term || filter ? (notes.data as (Note & {
+      session: Session & { seminar: Pick<Seminar, "id" | "name" | "color"> };
+    })[]).map((note) => ({ ...note, session: normalizeSessionSeminar(note.session) })) : []) as (Note & {
       session: Session & { seminar: Pick<Seminar, "id" | "name" | "color"> };
     })[]
   };

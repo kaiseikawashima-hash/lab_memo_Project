@@ -15,12 +15,22 @@ export function fileNameSafe(value: string) {
   return value.replace(/[^a-zA-Z0-9._-]/g, "_");
 }
 
+export function canonicalSeminarName(name: string) {
+  const aliases: Record<string, string> = {
+    "輪読ゼミA": "数理最適化ゼミ",
+    "輪読ゼミB": "Python 機械学習ゼミ"
+  };
+
+  return aliases[name] || name;
+}
+
 export function seminarDescription(name: string, fallback?: string | null) {
+  const canonicalName = canonicalSeminarName(name);
   const descriptions: Record<string, string> = {
     "研究ゼミ": "研究テーマの議論、進捗、関連論文の理解メモを蓄積します。",
     "数理最適化ゼミ": "最適化理論、凸解析、数理モデルの輪読メモをまとめます。",
     "Python 機械学習ゼミ": "Python 実装、機械学習モデル、実験まわりの輪読メモをまとめます。"
   };
 
-  return descriptions[name] || fallback || "";
+  return descriptions[canonicalName] || fallback || "";
 }
