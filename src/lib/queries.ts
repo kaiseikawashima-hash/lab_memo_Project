@@ -7,13 +7,13 @@ const initialSeminars = [
     color: "#22d3ee"
   },
   {
-    name: "輪読ゼミA",
-    description: "理論・数理最適化・基礎寄りの輪読メモをまとめます。",
+    name: "数理最適化ゼミ",
+    description: "最適化理論、凸解析、数理モデルの輪読メモをまとめます。",
     color: "#a78bfa"
   },
   {
-    name: "輪読ゼミB",
-    description: "機械学習モデル、システム、応用寄りの輪読メモをまとめます。",
+    name: "Python 機械学習ゼミ",
+    description: "Python 実装、機械学習モデル、実験まわりの輪読メモをまとめます。",
     color: "#38bdf8"
   }
 ];

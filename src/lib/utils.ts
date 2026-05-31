@@ -18,8 +18,8 @@ export function fileNameSafe(value: string) {
 export function seminarDescription(name: string, fallback?: string | null) {
   const descriptions: Record<string, string> = {
     "研究ゼミ": "研究テーマの議論、進捗、関連論文の理解メモを蓄積します。",
-    "輪読ゼミA": "理論・数理最適化・基礎寄りの輪読メモをまとめます。",
-    "輪読ゼミB": "機械学習モデル、システム、応用寄りの輪読メモをまとめます。"
+    "数理最適化ゼミ": "最適化理論、凸解析、数理モデルの輪読メモをまとめます。",
+    "Python 機械学習ゼミ": "Python 実装、機械学習モデル、実験まわりの輪読メモをまとめます。"
   };
 
   return descriptions[name] || fallback || "";
