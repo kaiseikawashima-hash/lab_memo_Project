@@ -12,6 +12,7 @@ export type Session = {
   id: string;
   seminar_id: string;
   title: string;
+  session_number: number | null;
   date: string | null;
   speaker: string | null;
   paper_title: string | null;

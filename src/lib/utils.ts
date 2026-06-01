@@ -34,3 +34,21 @@ export function seminarDescription(name: string, fallback?: string | null) {
 
   return descriptions[canonicalName] || fallback || "";
 }
+
+export function sessionNumberLabel(sessionNumber?: number | null) {
+  return sessionNumber ? `第${sessionNumber}回` : null;
+}
+
+export function sessionSubtitle(session: {
+  summary?: string | null;
+  paper_title?: string | null;
+  seminar?: { name?: string | null } | null;
+}) {
+  const seminarName = session.seminar?.name ? canonicalSeminarName(session.seminar.name) : "";
+
+  if (seminarName === "研究ゼミ") {
+    return session.paper_title || session.summary || "内容メモ未設定";
+  }
+
+  return session.summary || session.paper_title || "扱った内容のメモは未設定";
+}

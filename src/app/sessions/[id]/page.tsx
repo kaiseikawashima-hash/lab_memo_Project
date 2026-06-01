@@ -10,7 +10,7 @@ import { PdfViewer } from "@/components/PdfViewer";
 import { SetupNotice } from "@/components/SetupNotice";
 import { getNotes, getSession } from "@/lib/queries";
 import { isSupabaseConfigured } from "@/lib/supabase";
-import { formatDate } from "@/lib/utils";
+import { formatDate, sessionNumberLabel } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -28,11 +28,13 @@ export default async function SessionDetailPage({ params }: { params: { id: stri
               <div>
                 <div className="mb-2 flex flex-wrap gap-2">
                   <Badge tone="cyan">{session.seminar.name}</Badge>
+                  {sessionNumberLabel(session.session_number) ? <Badge tone="violet">{sessionNumberLabel(session.session_number)}</Badge> : null}
                   <Badge>{formatDate(session.date)}</Badge>
                   {session.speaker ? <Badge tone="violet">{session.speaker}</Badge> : null}
                 </div>
                 <h1 className="text-2xl font-black text-white md:text-3xl">{session.title}</h1>
-                <p className="mt-2 text-slate-300">{session.paper_title}</p>
+                {session.paper_title ? <p className="mt-2 text-slate-300">{session.paper_title}</p> : null}
+                {!session.paper_title && session.summary ? <p className="mt-2 text-slate-300">{session.summary}</p> : null}
                 {session.paper_authors ? <p className="mt-1 text-sm text-slate-500">{session.paper_authors}</p> : null}
               </div>
               <div className="flex flex-wrap items-center gap-2">

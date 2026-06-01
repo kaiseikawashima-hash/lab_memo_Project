@@ -5,7 +5,7 @@ import { SubmitButton } from "./SubmitButton";
 export function SessionForm({ seminars }: { seminars: Seminar[] }) {
   return (
     <form action={createSession} className="glass grid gap-5 rounded-2xl p-6">
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <label>
           <span className="label">ゼミ</span>
           <select name="seminar_id" required className="field">
@@ -17,13 +17,17 @@ export function SessionForm({ seminars }: { seminars: Seminar[] }) {
           </select>
         </label>
         <label>
+          <span className="label">第何回</span>
+          <input name="session_number" type="number" min="1" className="field" placeholder="例: 3" />
+        </label>
+        <label>
           <span className="label">日付</span>
           <input name="date" type="date" className="field" />
         </label>
       </div>
       <label>
-        <span className="label">発表タイトル</span>
-        <input name="title" required className="field" placeholder="例: Diffusion Models and Score Matching" />
+        <span className="label">発表・内容タイトル</span>
+        <input name="title" required className="field" placeholder="例: Big-M法と解釈可能性 / Pythonで学ぶSVM" />
       </label>
       <div className="grid gap-4 md:grid-cols-2">
         <label>
@@ -36,15 +40,15 @@ export function SessionForm({ seminars }: { seminars: Seminar[] }) {
         </label>
       </div>
       <label>
-        <span className="label">論文タイトル</span>
+        <span className="label">論文タイトル（研究ゼミ向け・任意）</span>
         <input name="paper_title" className="field" />
       </label>
       <label>
-        <span className="label">論文著者</span>
+        <span className="label">論文著者（任意）</span>
         <input name="paper_authors" className="field" />
       </label>
       <label>
-        <span className="label">概要</span>
+        <span className="label">内容メモ・概要</span>
         <textarea name="summary" rows={4} className="field" />
       </label>
       <label>

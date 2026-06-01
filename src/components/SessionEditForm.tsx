@@ -17,7 +17,7 @@ export function SessionEditForm({
       <input type="hidden" name="session_id" value={session.id} />
       <input type="hidden" name="old_pdf_path" value={session.pdf_path || ""} />
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <label>
           <span className="label">ゼミ</span>
           <select name="seminar_id" required className="field" defaultValue={selectedSeminarId}>
@@ -29,13 +29,17 @@ export function SessionEditForm({
           </select>
         </label>
         <label>
+          <span className="label">第何回</span>
+          <input name="session_number" type="number" min="1" className="field" defaultValue={session.session_number || ""} />
+        </label>
+        <label>
           <span className="label">日付</span>
           <input name="date" type="date" className="field" defaultValue={session.date || ""} />
         </label>
       </div>
 
       <label>
-        <span className="label">発表タイトル</span>
+        <span className="label">発表・内容タイトル</span>
         <input name="title" required className="field" defaultValue={session.title} />
       </label>
 
@@ -51,17 +55,17 @@ export function SessionEditForm({
       </div>
 
       <label>
-        <span className="label">論文タイトル</span>
+        <span className="label">論文タイトル（研究ゼミ向け・任意）</span>
         <input name="paper_title" className="field" defaultValue={session.paper_title || ""} />
       </label>
 
       <label>
-        <span className="label">論文著者</span>
+        <span className="label">論文著者（任意）</span>
         <input name="paper_authors" className="field" defaultValue={session.paper_authors || ""} />
       </label>
 
       <label>
-        <span className="label">概要</span>
+        <span className="label">内容メモ・概要</span>
         <textarea name="summary" rows={4} className="field" defaultValue={session.summary || ""} />
       </label>
 

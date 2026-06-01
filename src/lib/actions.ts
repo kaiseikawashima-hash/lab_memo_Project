@@ -10,6 +10,7 @@ export async function createSession(formData: FormData) {
   const seminarId = String(formData.get("seminar_id") || "");
   const title = String(formData.get("title") || "");
   const date = String(formData.get("date") || "") || null;
+  const sessionNumber = String(formData.get("session_number") || "");
   const pdf = formData.get("pdf_file");
 
   let duplicateQuery = supabase
@@ -30,6 +31,7 @@ export async function createSession(formData: FormData) {
     .insert({
       seminar_id: seminarId,
       title,
+      session_number: sessionNumber ? Number(sessionNumber) : null,
       date,
       speaker: String(formData.get("speaker") || "") || null,
       paper_title: String(formData.get("paper_title") || "") || null,
@@ -68,9 +70,12 @@ export async function updateSession(formData: FormData) {
   const oldPdfPath = String(formData.get("old_pdf_path") || "");
   const pdf = formData.get("pdf_file");
 
-  const updates: Record<string, string | null> = {
+  const sessionNumber = String(formData.get("session_number") || "");
+
+  const updates: Record<string, string | number | null> = {
     seminar_id: String(formData.get("seminar_id") || ""),
     title: String(formData.get("title") || ""),
+    session_number: sessionNumber ? Number(sessionNumber) : null,
     date: String(formData.get("date") || "") || null,
     speaker: String(formData.get("speaker") || "") || null,
     paper_title: String(formData.get("paper_title") || "") || null,

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BrainCircuit, FilePlus2, Home, Layers3 } from "lucide-react";
 import { getSeminars, getSessions } from "@/lib/queries";
-import { formatDate } from "@/lib/utils";
+import { formatDate, sessionNumberLabel } from "@/lib/utils";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const [seminars, sessions] = await Promise.all([getSeminars(), getSessions()]);
@@ -50,6 +50,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
                   <div className="mt-1 space-y-1 pl-6">
                     {ownSessions.slice(0, 5).map((session) => (
                       <Link key={session.id} href={`/sessions/${session.id}`} className="block truncate rounded-lg px-2 py-1.5 text-xs text-slate-400 hover:bg-white/5 hover:text-cyan-100">
+                        {sessionNumberLabel(session.session_number) ? `${sessionNumberLabel(session.session_number)} · ` : ""}
                         {formatDate(session.date)} · {session.title}
                       </Link>
                     ))}

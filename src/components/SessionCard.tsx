@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CalendarDays, ExternalLink, FileText, Pencil } from "lucide-react";
 import { deleteSession } from "@/lib/actions";
 import { SessionWithCounts } from "@/lib/supabase";
-import { formatDate } from "@/lib/utils";
+import { formatDate, sessionNumberLabel, sessionSubtitle } from "@/lib/utils";
 import { Badge } from "./Badge";
 import { DeleteButton } from "./DeleteButton";
 
@@ -18,12 +18,13 @@ export function SessionCard({ session }: { session: SessionWithCounts }) {
           <div className="mb-2 flex items-center gap-2 text-xs text-slate-400">
             <CalendarDays className="h-4 w-4" />
             {formatDate(session.date)}
+            {sessionNumberLabel(session.session_number) ? <span>・{sessionNumberLabel(session.session_number)}</span> : null}
           </div>
           <h3 className="text-lg font-bold text-white">{session.title}</h3>
         </div>
         {session.seminar ? <Badge tone="cyan">{session.seminar.name}</Badge> : null}
       </div>
-      <p className="mt-3 line-clamp-2 text-sm text-slate-300">{session.paper_title || "論文タイトル未設定"}</p>
+      <p className="mt-3 line-clamp-2 text-sm text-slate-300">{sessionSubtitle(session)}</p>
       <div className="mt-5 flex flex-wrap gap-2">
         <Badge icon="tag">{countOf(session.notes)} 件のメモ</Badge>
         <Badge tone="amber" icon="flag">重要 {countOf(session.important_notes)}</Badge>

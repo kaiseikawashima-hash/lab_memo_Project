@@ -12,6 +12,7 @@ create table if not exists public.sessions (
   id uuid primary key default gen_random_uuid(),
   seminar_id uuid references public.seminars(id) on delete cascade,
   title text not null,
+  session_number integer,
   date date,
   speaker text,
   paper_title text,
