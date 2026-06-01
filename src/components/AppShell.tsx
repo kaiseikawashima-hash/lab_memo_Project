@@ -1,8 +1,30 @@
 import Link from "next/link";
-import { BrainCircuit, ChevronDown, FilePlus2, Home, Layers3 } from "lucide-react";
+import {
+  BrainCircuit,
+  ChevronDown,
+  FilePlus2,
+  FileText,
+  Home,
+  Layers3,
+  Library,
+  Network,
+  Search,
+  Settings,
+  Tags
+} from "lucide-react";
 import { getSeminars, getSessions } from "@/lib/queries";
 import { sessionNavLabel } from "@/lib/utils";
 import { BackButton } from "./BackButton";
+
+const navItems = [
+  { href: "/", label: "Dashboard", icon: Home, tone: "text-cyan-200" },
+  { href: "/sessions", label: "Sessions", icon: Library, tone: "text-violet-200" },
+  { href: "/papers", label: "Papers", icon: FileText, tone: "text-sky-200" },
+  { href: "/knowledge-map", label: "Knowledge Map", icon: Network, tone: "text-cyan-200" },
+  { href: "/tags", label: "Tags", icon: Tags, tone: "text-violet-200" },
+  { href: "/search", label: "Search", icon: Search, tone: "text-sky-200" },
+  { href: "/settings", label: "Settings", icon: Settings, tone: "text-slate-300" }
+];
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const [seminars, sessions] = await Promise.all([getSeminars(), getSessions()]);
@@ -20,6 +42,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
       </header>
+
       <aside className="fixed inset-y-0 left-0 z-20 hidden w-72 border-r border-line bg-slate-950/72 backdrop-blur-xl lg:flex lg:flex-col">
         <div className="shrink-0 p-5 pb-3">
           <Link href="/" className="flex items-center gap-3">
@@ -32,14 +55,19 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
             </span>
           </Link>
 
-          <nav className="mt-8 space-y-2">
+          <nav className="mt-7 space-y-1">
             <BackButton />
-            <Link className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-200 hover:bg-white/5" href="/">
-              <Home className="h-4 w-4 text-cyan-200" />
-              ダッシュボード
-            </Link>
-            <Link className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-200 hover:bg-white/5" href="/sessions/new">
-              <FilePlus2 className="h-4 w-4 text-violet-200" />
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link key={item.href} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-200 hover:bg-white/5" href={item.href}>
+                  <Icon className={`h-4 w-4 ${item.tone}`} />
+                  {item.label}
+                </Link>
+              );
+            })}
+            <Link className="mt-3 flex items-center justify-center gap-2 rounded-xl bg-cyan-300 px-3 py-2.5 text-sm font-black text-slate-950 hover:bg-cyan-200" href="/sessions/new">
+              <FilePlus2 className="h-4 w-4" />
               発表回を追加
             </Link>
           </nav>

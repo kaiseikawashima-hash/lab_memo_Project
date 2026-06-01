@@ -3,6 +3,7 @@ import Link from "next/link";
 import { AppShell } from "@/components/AppShell";
 import { Badge } from "@/components/Badge";
 import { NoteList } from "@/components/NoteList";
+import { PaperCard } from "@/components/PaperCard";
 import { SearchBar } from "@/components/SearchBar";
 import { SessionCard } from "@/components/SessionCard";
 import { SetupNotice } from "@/components/SetupNotice";
@@ -20,7 +21,7 @@ export default async function SearchPage({
 
   const q = searchParams.q || "";
   const filter = searchParams.filter;
-  const { sessions, notes } = await searchAll(q, filter);
+  const { sessions, papers, notes } = await searchAll(q, filter);
 
   return (
     <AppShell>
@@ -36,6 +37,14 @@ export default async function SearchPage({
             <Link href={`/search?q=${encodeURIComponent(q)}&filter=before`}><Badge tone={filter === "before" ? "violet" : "slate"}>発表前確認のみ</Badge></Link>
           </div>
         </header>
+
+        <section className="mb-8">
+          <h2 className="mb-4 text-xl font-bold">論文カードの検索結果</h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            {papers.map((paper) => <PaperCard key={paper.id} paper={paper} />)}
+          </div>
+          {!papers.length ? <p className="text-sm text-slate-500">一致する論文カードはありません。</p> : null}
+        </section>
 
         <section className="mb-8">
           <h2 className="mb-4 text-xl font-bold">発表回の検索結果</h2>

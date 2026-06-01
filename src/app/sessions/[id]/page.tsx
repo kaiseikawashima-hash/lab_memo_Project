@@ -3,12 +3,15 @@ import { ExternalLink, Pencil } from "lucide-react";
 import { deleteSession } from "@/lib/actions";
 import { AppShell } from "@/components/AppShell";
 import { Badge } from "@/components/Badge";
+import { AiPdfTools } from "@/components/AiPdfTools";
 import { DeleteButton } from "@/components/DeleteButton";
 import { NoteForm } from "@/components/NoteForm";
 import { NoteList } from "@/components/NoteList";
 import { PdfViewer } from "@/components/PdfViewer";
+import { RelatedNotes } from "@/components/RelatedNotes";
 import { SetupNotice } from "@/components/SetupNotice";
-import { getNotes, getSession } from "@/lib/queries";
+import { TranslationPanel } from "@/components/TranslationPanel";
+import { getNotes, getRelatedNotes, getSession, getTranslationNotes } from "@/lib/queries";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import { formatDate, sessionNumberLabel } from "@/lib/utils";
 
@@ -17,7 +20,12 @@ export const dynamic = "force-dynamic";
 export default async function SessionDetailPage({ params }: { params: { id: string } }) {
   if (!isSupabaseConfigured()) return <SetupNotice />;
 
-  const [session, notes] = await Promise.all([getSession(params.id), getNotes(params.id)]);
+  const [session, notes, relatedNotes, translationNotes] = await Promise.all([
+    getSession(params.id),
+    getNotes(params.id),
+    getRelatedNotes(params.id),
+    getTranslationNotes(params.id)
+  ]);
 
   return (
     <AppShell>
@@ -58,6 +66,18 @@ export default async function SessionDetailPage({ params }: { params: { id: stri
         </section>
 
         <aside className="space-y-5">
+          <AiPdfTools session={session} />
+          {(session.ai_one_liner || session.ai_summary || session.ai_tags?.length || session.ai_keywords?.length) ? (
+            <section className="glass rounded-2xl p-4">
+              <h2 className="mb-3 text-lg font-bold">AI生成サマリー</h2>
+              {session.ai_one_liner ? <p className="mb-3 rounded-xl border border-cyan-300/20 bg-cyan-300/10 p-3 text-sm leading-6 text-cyan-100">{session.ai_one_liner}</p> : null}
+              {session.ai_summary ? <p className="whitespace-pre-wrap text-sm leading-7 text-slate-300">{session.ai_summary}</p> : null}
+              <div className="mt-3 flex flex-wrap gap-2">
+                {session.ai_tags?.map((tag) => <Badge key={tag} icon="tag">{tag}</Badge>)}
+                {session.ai_keywords?.map((keyword) => <Badge key={keyword} tone="violet">{keyword}</Badge>)}
+              </div>
+            </section>
+          ) : null}
           <div>
             <h2 className="mb-3 text-lg font-bold">AI 質問ログと理解メモ</h2>
             <NoteForm sessionId={session.id} />
@@ -66,6 +86,11 @@ export default async function SessionDetailPage({ params }: { params: { id: stri
             <h2 className="mb-3 text-lg font-bold">保存済みメモ</h2>
             <NoteList notes={notes} />
           </div>
+          <div>
+            <h2 className="mb-3 text-lg font-bold">Related Notes</h2>
+            <RelatedNotes notes={relatedNotes} />
+          </div>
+          <TranslationPanel sessionId={session.id} notes={translationNotes} />
         </aside>
       </div>
     </AppShell>

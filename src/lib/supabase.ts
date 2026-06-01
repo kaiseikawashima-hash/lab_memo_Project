@@ -11,6 +11,7 @@ export type Seminar = {
 export type Session = {
   id: string;
   seminar_id: string;
+  paper_id: string | null;
   title: string;
   session_number: number | null;
   date: string | null;
@@ -21,6 +22,10 @@ export type Session = {
   summary: string | null;
   pdf_url: string | null;
   pdf_path: string | null;
+  ai_one_liner: string | null;
+  ai_summary: string | null;
+  ai_tags: string[] | null;
+  ai_keywords: string[] | null;
   created_at: string;
   updated_at: string;
 };
@@ -35,6 +40,34 @@ export type Note = {
   tags: string[] | null;
   is_important: boolean;
   is_before_talk: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Paper = {
+  id: string;
+  title: string;
+  authors: string | null;
+  year: number | null;
+  venue: string | null;
+  url: string | null;
+  abstract: string | null;
+  one_line_summary: string | null;
+  japanese_summary: string | null;
+  tags: string[] | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type TranslationNote = {
+  id: string;
+  session_id: string;
+  page_number: number | null;
+  section_title: string | null;
+  original_text: string | null;
+  japanese_translation: string | null;
+  my_comment: string | null;
+  tags: string[] | null;
   created_at: string;
   updated_at: string;
 };

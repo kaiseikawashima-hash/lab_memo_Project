@@ -160,3 +160,75 @@ export async function deleteSession(formData: FormData) {
   revalidatePath("/");
   redirect("/");
 }
+
+export async function saveAiSessionResult(formData: FormData) {
+  const supabase = getSupabase();
+  const sessionId = String(formData.get("session_id") || "");
+
+  const { error } = await supabase
+    .from("sessions")
+    .update({
+      ai_one_liner: String(formData.get("ai_one_liner") || "") || null,
+      ai_summary: String(formData.get("ai_summary") || "") || null,
+      ai_tags: splitTags(formData.get("ai_tags")),
+      ai_keywords: splitTags(formData.get("ai_keywords"))
+    })
+    .eq("id", sessionId);
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/");
+  revalidatePath(`/sessions/${sessionId}`);
+}
+
+export async function createPaperFromAi(formData: FormData) {
+  const supabase = getSupabase();
+  const sessionId = String(formData.get("session_id") || "");
+  const yearValue = String(formData.get("year") || "");
+
+  const { data: paper, error } = await supabase
+    .from("papers")
+    .insert({
+      title: String(formData.get("title") || ""),
+      authors: String(formData.get("authors") || "") || null,
+      year: yearValue ? Number(yearValue) : null,
+      venue: String(formData.get("venue") || "") || null,
+      url: String(formData.get("url") || "") || null,
+      abstract: String(formData.get("abstract") || "") || null,
+      one_line_summary: String(formData.get("one_line_summary") || "") || null,
+      japanese_summary: String(formData.get("japanese_summary") || "") || null,
+      tags: splitTags(formData.get("tags"))
+    })
+    .select("id")
+    .single();
+
+  if (error || !paper) throw new Error(error?.message || "Failed to create paper");
+
+  const { error: updateError } = await supabase.from("sessions").update({ paper_id: paper.id }).eq("id", sessionId);
+  if (updateError) throw new Error(updateError.message);
+
+  revalidatePath("/");
+  revalidatePath("/papers");
+  revalidatePath(`/sessions/${sessionId}`);
+  redirect(`/papers/${paper.id}`);
+}
+
+export async function createTranslationNote(formData: FormData) {
+  const supabase = getSupabase();
+  const sessionId = String(formData.get("session_id") || "");
+  const pageValue = String(formData.get("page_number") || "");
+
+  const { error } = await supabase.from("translation_notes").insert({
+    session_id: sessionId,
+    page_number: pageValue ? Number(pageValue) : null,
+    section_title: String(formData.get("section_title") || "") || null,
+    original_text: String(formData.get("original_text") || "") || null,
+    japanese_translation: String(formData.get("japanese_translation") || "") || null,
+    my_comment: String(formData.get("my_comment") || "") || null,
+    tags: splitTags(formData.get("tags"))
+  });
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath(`/sessions/${sessionId}`);
+}
