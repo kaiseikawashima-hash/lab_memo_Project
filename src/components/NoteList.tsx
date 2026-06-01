@@ -57,11 +57,6 @@ export function NoteList({ notes, compact = false }: { notes: NoteWithSession[];
               ) : null}
             </div>
           </details>
-          {compact ? null : (
-            <p className="mt-3 line-clamp-3 text-sm text-slate-300">
-              <MathText text={note.my_note || note.answer || "回答・理解メモは未入力です。"} />
-            </p>
-          )}
           <div className="mt-3 flex flex-wrap gap-2">
             {note.page_number ? <Badge tone="cyan">p.{note.page_number}</Badge> : null}
             {note.is_important ? <Badge tone="amber" icon="flag">重要</Badge> : null}
