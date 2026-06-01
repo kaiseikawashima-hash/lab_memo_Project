@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CalendarDays, ExternalLink, FileText } from "lucide-react";
+import { CalendarDays, ExternalLink, FileText, Pencil } from "lucide-react";
 import { deleteSession } from "@/lib/actions";
 import { SessionWithCounts } from "@/lib/supabase";
 import { formatDate } from "@/lib/utils";
@@ -34,9 +34,14 @@ export function SessionCard({ session }: { session: SessionWithCounts }) {
         {session.paper_authors || "著者未設定"}
       </div>
       <div className="mt-5 flex items-center justify-between gap-3">
-        <Link href={`/sessions/${session.id}`} className="inline-flex items-center gap-2 rounded-lg border border-cyan-300/25 bg-cyan-400/10 px-3 py-2 text-sm font-semibold text-cyan-100 hover:border-cyan-300/50">
-          開く <ExternalLink className="h-4 w-4" />
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link href={`/sessions/${session.id}`} className="inline-flex items-center gap-2 rounded-lg border border-cyan-300/25 bg-cyan-400/10 px-3 py-2 text-sm font-semibold text-cyan-100 hover:border-cyan-300/50">
+            開く <ExternalLink className="h-4 w-4" />
+          </Link>
+          <Link href={`/sessions/${session.id}/edit`} className="inline-flex items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-sm font-semibold text-slate-200 hover:border-cyan-300/50">
+            編集 <Pencil className="h-4 w-4" />
+          </Link>
+        </div>
         <form action={deleteSession}>
           <input type="hidden" name="session_id" value={session.id} />
           <input type="hidden" name="pdf_path" value={session.pdf_path || ""} />

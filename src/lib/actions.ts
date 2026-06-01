@@ -62,6 +62,49 @@ export async function createSession(formData: FormData) {
   redirect(`/sessions/${session.id}`);
 }
 
+export async function updateSession(formData: FormData) {
+  const supabase = getSupabase();
+  const sessionId = String(formData.get("session_id") || "");
+  const oldPdfPath = String(formData.get("old_pdf_path") || "");
+  const pdf = formData.get("pdf_file");
+
+  const updates: Record<string, string | null> = {
+    seminar_id: String(formData.get("seminar_id") || ""),
+    title: String(formData.get("title") || ""),
+    date: String(formData.get("date") || "") || null,
+    speaker: String(formData.get("speaker") || "") || null,
+    paper_title: String(formData.get("paper_title") || "") || null,
+    paper_authors: String(formData.get("paper_authors") || "") || null,
+    paper_url: String(formData.get("paper_url") || "") || null,
+    summary: String(formData.get("summary") || "") || null
+  };
+
+  if (pdf instanceof File && pdf.size > 0) {
+    const path = `sessions/${sessionId}/${Date.now()}-${fileNameSafe(pdf.name)}`;
+    const { error: uploadError } = await supabase.storage.from("seminar-pdfs").upload(path, pdf, {
+      contentType: pdf.type || "application/pdf",
+      upsert: true
+    });
+    if (uploadError) throw new Error(uploadError.message);
+
+    if (oldPdfPath) {
+      await supabase.storage.from("seminar-pdfs").remove([oldPdfPath]);
+    }
+
+    const { data } = supabase.storage.from("seminar-pdfs").getPublicUrl(path);
+    updates.pdf_path = path;
+    updates.pdf_url = data.publicUrl;
+  }
+
+  const { error } = await supabase.from("sessions").update(updates).eq("id", sessionId);
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/");
+  revalidatePath(`/sessions/${sessionId}`);
+  revalidatePath(`/sessions/${sessionId}/edit`);
+  redirect(`/sessions/${sessionId}`);
+}
+
 export async function createNote(formData: FormData) {
   const supabase = getSupabase();
   const sessionId = String(formData.get("session_id") || "");

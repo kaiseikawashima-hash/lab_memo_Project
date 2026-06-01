@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Pencil } from "lucide-react";
 import { deleteSession } from "@/lib/actions";
 import { AppShell } from "@/components/AppShell";
 import { Badge } from "@/components/Badge";
@@ -41,6 +41,9 @@ export default async function SessionDetailPage({ params }: { params: { id: stri
                     論文を開く <ExternalLink className="h-4 w-4" />
                   </Link>
                 ) : null}
+                <Link href={`/sessions/${session.id}/edit`} className="inline-flex items-center gap-2 rounded-xl border border-cyan-300/25 bg-cyan-400/10 px-3 py-2 text-sm font-semibold text-cyan-100 hover:border-cyan-300/50">
+                  編集・PDF追加 <Pencil className="h-4 w-4" />
+                </Link>
                 <form action={deleteSession}>
                   <input type="hidden" name="session_id" value={session.id} />
                   <input type="hidden" name="pdf_path" value={session.pdf_path || ""} />
