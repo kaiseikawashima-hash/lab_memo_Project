@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BrainCircuit, FilePlus2, Home, Layers3 } from "lucide-react";
+import { BrainCircuit, ChevronDown, FilePlus2, Home, Layers3 } from "lucide-react";
 import { getSeminars, getSessions } from "@/lib/queries";
 import { formatDate, sessionNumberLabel } from "@/lib/utils";
 
@@ -8,29 +8,31 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen">
-      <aside className="fixed inset-y-0 left-0 z-20 hidden w-72 border-r border-line bg-slate-950/72 p-5 backdrop-blur-xl lg:block">
-        <Link href="/" className="flex items-center gap-3">
-          <span className="grid h-11 w-11 place-items-center rounded-2xl border border-cyan-300/30 bg-cyan-400/10 text-cyan-100">
-            <BrainCircuit className="h-6 w-6" />
-          </span>
-          <span>
-            <span className="block text-lg font-bold tracking-wide">Seminar OS</span>
-            <span className="block text-xs text-slate-400">研究メモ / 輪読ログ</span>
-          </span>
-        </Link>
-
-        <nav className="mt-8 space-y-2">
-          <Link className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-200 hover:bg-white/5" href="/">
-            <Home className="h-4 w-4 text-cyan-200" />
-            ダッシュボード
+      <aside className="fixed inset-y-0 left-0 z-20 hidden w-72 border-r border-line bg-slate-950/72 backdrop-blur-xl lg:flex lg:flex-col">
+        <div className="shrink-0 p-5 pb-3">
+          <Link href="/" className="flex items-center gap-3">
+            <span className="grid h-11 w-11 place-items-center rounded-2xl border border-cyan-300/30 bg-cyan-400/10 text-cyan-100">
+              <BrainCircuit className="h-6 w-6" />
+            </span>
+            <span>
+              <span className="block text-lg font-bold tracking-wide">Seminar OS</span>
+              <span className="block text-xs text-slate-400">研究メモ / 輪読ログ</span>
+            </span>
           </Link>
-          <Link className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-200 hover:bg-white/5" href="/sessions/new">
-            <FilePlus2 className="h-4 w-4 text-violet-200" />
-            発表回を追加
-          </Link>
-        </nav>
 
-        <div className="mt-8">
+          <nav className="mt-8 space-y-2">
+            <Link className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-200 hover:bg-white/5" href="/">
+              <Home className="h-4 w-4 text-cyan-200" />
+              ダッシュボード
+            </Link>
+            <Link className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-200 hover:bg-white/5" href="/sessions/new">
+              <FilePlus2 className="h-4 w-4 text-violet-200" />
+              発表回を追加
+            </Link>
+          </nav>
+        </div>
+
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-6 pt-5 [scrollbar-color:rgba(34,211,238,0.45)_transparent]">
           <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
             <Layers3 className="h-4 w-4" />
             ゼミ一覧
@@ -39,23 +41,26 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
             {seminars.map((seminar) => {
               const ownSessions = sessions.filter((session) => session.seminar?.name === seminar.name || session.seminar_id === seminar.id);
               return (
-                <section key={seminar.id}>
-                  <Link href={`/seminars/${seminar.id}`} className="group flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/5">
-                    <span className="flex items-center gap-2 text-sm font-semibold">
-                      <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: seminar.color || "#22d3ee" }} />
-                      {seminar.name}
+                <details key={seminar.id} className="group rounded-xl" open={ownSessions.length > 0}>
+                  <summary className="flex cursor-pointer list-none items-center justify-between rounded-xl px-3 py-2 hover:bg-white/5">
+                    <Link href={`/seminars/${seminar.id}`} className="flex min-w-0 items-center gap-2 text-sm font-semibold" title={`${seminar.name}を開く`}>
+                      <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: seminar.color || "#22d3ee" }} />
+                      <span className="truncate">{seminar.name}</span>
+                    </Link>
+                    <span className="ml-2 flex shrink-0 items-center gap-2 text-xs text-slate-500">
+                      {ownSessions.length}
+                      <ChevronDown className="h-3.5 w-3.5 transition group-open:rotate-180" />
                     </span>
-                    <span className="text-xs text-slate-500">{ownSessions.length}</span>
-                  </Link>
+                  </summary>
                   <div className="mt-1 space-y-1 pl-6">
-                    {ownSessions.slice(0, 5).map((session) => (
+                    {ownSessions.map((session) => (
                       <Link key={session.id} href={`/sessions/${session.id}`} className="block truncate rounded-lg px-2 py-1.5 text-xs text-slate-400 hover:bg-white/5 hover:text-cyan-100">
                         {sessionNumberLabel(session.session_number) ? `${sessionNumberLabel(session.session_number)} · ` : ""}
                         {formatDate(session.date)} · {session.title}
                       </Link>
                     ))}
                   </div>
-                </section>
+                </details>
               );
             })}
           </div>
