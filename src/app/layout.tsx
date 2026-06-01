@@ -6,8 +6,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Seminar OS",
-  description: "Personal research knowledge base for ML and Optimization"
+  title: "説明できる最適化ノート",
+  description: "最適多分木を用いた解釈可能な最適化モデルの研究ログ"
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

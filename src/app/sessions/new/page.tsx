@@ -13,10 +13,10 @@ export default async function NewSessionPage() {
 
   return (
     <AppShell>
-      <div className="mx-auto max-w-4xl px-5 py-8">
+      <div className="mx-auto max-w-4xl px-4 py-6 sm:px-5 sm:py-8">
         <header className="mb-6">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-200">発表回を作成</p>
-          <h1 className="mt-2 text-4xl font-black text-white">新しい発表回</h1>
+          <h1 className="mt-2 text-3xl font-black text-white sm:text-4xl">新しい発表回</h1>
           <p className="mt-3 text-slate-400">PDF は Supabase Storage の sessions/[session_id]/[filename] に保存されます。</p>
         </header>
         <SessionForm seminars={seminars} />

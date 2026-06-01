@@ -1,6 +1,6 @@
-# Seminar OS
+# 説明できる最適化ノート
 
-Personal research knowledge base for ML and Optimization.
+最適多分木を用いた解釈可能な最適化モデルの研究ログ。
 
 研究ゼミ・輪読ゼミで使った PDF スライドや資料を保存し、発表回ごとに「AI への質問・回答・自分の理解メモ」を蓄積する B4 研究用 MVP です。AI 連携はせず、ChatGPT や Claude で得た回答を手動で貼り付けて、あとから検索・復習できるようにします。
 

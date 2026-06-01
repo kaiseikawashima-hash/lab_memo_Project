@@ -13,10 +13,10 @@ export default async function EditSessionPage({ params }: { params: { id: string
 
   return (
     <AppShell>
-      <div className="mx-auto max-w-4xl px-5 py-8">
+      <div className="mx-auto max-w-4xl px-4 py-6 sm:px-5 sm:py-8">
         <header className="mb-6">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-200">発表回を編集</p>
-          <h1 className="mt-2 text-4xl font-black text-white">資料や情報をあとから追加</h1>
+          <h1 className="mt-2 text-3xl font-black text-white sm:text-4xl">資料や情報をあとから追加</h1>
           <p className="mt-3 text-slate-400">
             スライド作成中に発表回だけ先に作り、質問ログを溜めたあとで PDF・論文情報・概要を更新できます。
           </p>

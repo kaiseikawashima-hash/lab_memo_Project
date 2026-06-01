@@ -2,12 +2,24 @@ import Link from "next/link";
 import { BrainCircuit, ChevronDown, FilePlus2, Home, Layers3 } from "lucide-react";
 import { getSeminars, getSessions } from "@/lib/queries";
 import { formatDate, sessionNumberLabel } from "@/lib/utils";
+import { BackButton } from "./BackButton";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const [seminars, sessions] = await Promise.all([getSeminars(), getSessions()]);
 
   return (
     <div className="min-h-screen">
+      <header className="sticky top-0 z-30 border-b border-line bg-slate-950/86 px-3 py-2 backdrop-blur-xl lg:hidden">
+        <div className="flex items-center justify-between gap-2">
+          <BackButton compact />
+          <Link href="/" className="min-w-0 flex-1 truncate text-center text-sm font-black text-white">
+            説明できる最適化ノート
+          </Link>
+          <Link href="/sessions/new" className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-cyan-300/25 bg-cyan-400/10 text-cyan-100" aria-label="発表回を追加">
+            <FilePlus2 className="h-4 w-4" />
+          </Link>
+        </div>
+      </header>
       <aside className="fixed inset-y-0 left-0 z-20 hidden w-72 border-r border-line bg-slate-950/72 backdrop-blur-xl lg:flex lg:flex-col">
         <div className="shrink-0 p-5 pb-3">
           <Link href="/" className="flex items-center gap-3">
@@ -15,12 +27,13 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
               <BrainCircuit className="h-6 w-6" />
             </span>
             <span>
-              <span className="block text-lg font-bold tracking-wide">Seminar OS</span>
-              <span className="block text-xs text-slate-400">研究メモ / 輪読ログ</span>
+              <span className="block text-lg font-bold tracking-wide">説明できる最適化ノート</span>
+              <span className="block text-xs text-slate-400">解釈可能な最適化 / 研究ログ</span>
             </span>
           </Link>
 
           <nav className="mt-8 space-y-2">
+            <BackButton />
             <Link className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-200 hover:bg-white/5" href="/">
               <Home className="h-4 w-4 text-cyan-200" />
               ダッシュボード

@@ -21,18 +21,18 @@ export default async function DashboardPage() {
 
   return (
     <AppShell>
-      <div className="mx-auto max-w-7xl px-5 py-8">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-5 sm:py-8">
         <header className="mb-8">
           <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
             <div>
               <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-xs font-semibold text-cyan-100">
                 <Sparkles className="h-3.5 w-3.5" />
-                ML・数理最適化のための個人研究ナレッジベース
+                最適多分木で「なぜその解か」を説明する研究ノート
               </div>
-              <h1 className="text-4xl font-black tracking-tight text-white md:text-6xl">Seminar OS</h1>
+              <h1 className="text-3xl font-black tracking-tight text-white sm:text-4xl md:text-6xl">説明できる最適化ノート</h1>
               <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300 md:text-lg">
-                研究テーマは「AIや最適化モデルがなぜその答えを選んだのか」を、人間にも説明できる形にすることです。
-                複雑な意思決定をただ当てるだけでなく、根拠まで追える仕組みを作ることで、医療・金融・社会システムのような重要な場面でも安心して使える最適化を目指しています。
+                研究テーマは、最適化モデルが出した答えを「なぜその解になったのか」まで人間に分かる形で説明することです。
+                最適多分木を使って、状況ごとにどの候補解を選ぶべきかを短いルールとして表し、性能と分かりやすさを両立する最適化を目指しています。
               </p>
             </div>
             <Link href="/sessions/new" className="rounded-xl bg-cyan-300 px-5 py-3 font-bold text-slate-950 hover:bg-cyan-200">
