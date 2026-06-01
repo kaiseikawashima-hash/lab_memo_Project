@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BrainCircuit, ChevronDown, FilePlus2, Home, Layers3 } from "lucide-react";
 import { getSeminars, getSessions } from "@/lib/queries";
-import { formatDate, sessionNumberLabel } from "@/lib/utils";
+import { sessionNavLabel } from "@/lib/utils";
 import { BackButton } from "./BackButton";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
@@ -13,7 +13,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
         <div className="flex items-center justify-between gap-2">
           <BackButton compact />
           <Link href="/" className="min-w-0 flex-1 truncate text-center text-sm font-black text-white">
-            説明できる最適化ノート
+            OptiLens
           </Link>
           <Link href="/sessions/new" className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-cyan-300/25 bg-cyan-400/10 text-cyan-100" aria-label="発表回を追加">
             <FilePlus2 className="h-4 w-4" />
@@ -27,8 +27,8 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
               <BrainCircuit className="h-6 w-6" />
             </span>
             <span>
-              <span className="block text-lg font-bold tracking-wide">説明できる最適化ノート</span>
-              <span className="block text-xs text-slate-400">解釈可能な最適化 / 研究ログ</span>
+              <span className="block text-lg font-bold tracking-wide">OptiLens</span>
+              <span className="block text-xs text-slate-400">説明できる最適化ノート</span>
             </span>
           </Link>
 
@@ -68,8 +68,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
                   <div className="mt-1 space-y-1 pl-6">
                     {ownSessions.map((session) => (
                       <Link key={session.id} href={`/sessions/${session.id}`} className="block truncate rounded-lg px-2 py-1.5 text-xs text-slate-400 hover:bg-white/5 hover:text-cyan-100">
-                        {sessionNumberLabel(session.session_number) ? `${sessionNumberLabel(session.session_number)} · ` : ""}
-                        {formatDate(session.date)} · {session.title}
+                        {sessionNavLabel(session)}
                       </Link>
                     ))}
                   </div>

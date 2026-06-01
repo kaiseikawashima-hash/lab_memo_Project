@@ -6,7 +6,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "説明できる最適化ノート",
+  title: "OptiLens",
   description: "最適多分木を用いた解釈可能な最適化モデルの研究ログ"
 };
 

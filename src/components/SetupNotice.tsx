@@ -8,7 +8,7 @@ export function SetupNotice() {
           <TerminalSquare className="h-6 w-6" />
         </div>
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-200">セットアップが必要です</p>
-        <h1 className="mt-2 text-3xl font-black text-white">Supabase を接続すると説明できる最適化ノートを開始できます</h1>
+        <h1 className="mt-2 text-3xl font-black text-white">Supabase を接続すると OptiLens を開始できます</h1>
         <p className="mt-3 text-slate-300">
           `.env.local` に Supabase URL と publishable key を設定し、README の SQL を実行してください。
         </p>

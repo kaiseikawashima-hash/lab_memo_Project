@@ -39,6 +39,23 @@ export function sessionNumberLabel(sessionNumber?: number | null) {
   return sessionNumber ? `第${sessionNumber}回` : null;
 }
 
+export function shortDate(value: string | null) {
+  if (!value) return "日付未設定";
+  return new Intl.DateTimeFormat("ja-JP", {
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date(value));
+}
+
+export function sessionNavLabel(session: {
+  title: string;
+  date?: string | null;
+  session_number?: number | null;
+}) {
+  const parts = [sessionNumberLabel(session.session_number), session.title, shortDate(session.date || null)].filter(Boolean);
+  return parts.join("・");
+}
+
 export function sessionSubtitle(session: {
   summary?: string | null;
   paper_title?: string | null;
