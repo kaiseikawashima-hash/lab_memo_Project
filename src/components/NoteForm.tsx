@@ -1,9 +1,22 @@
+"use client";
+
+import { useRef } from "react";
+import { useRouter } from "next/navigation";
 import { createNote } from "@/lib/actions";
 import { SubmitButton } from "./SubmitButton";
 
 export function NoteForm({ sessionId }: { sessionId: string }) {
+  const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
+
+  async function handleCreateNote(formData: FormData) {
+    await createNote(formData);
+    formRef.current?.reset();
+    router.refresh();
+  }
+
   return (
-    <form action={createNote} className="glass grid gap-4 rounded-2xl p-4">
+    <form ref={formRef} action={handleCreateNote} className="glass grid gap-4 rounded-2xl p-4">
       <input type="hidden" name="session_id" value={sessionId} />
       <div className="grid gap-3 sm:grid-cols-[1fr_7rem]">
         <label>

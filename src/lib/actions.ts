@@ -130,7 +130,6 @@ export async function createNote(formData: FormData) {
 
   revalidatePath("/");
   revalidatePath(`/sessions/${sessionId}`);
-  redirect(`/sessions/${sessionId}`);
 }
 
 export async function deleteNote(formData: FormData) {
