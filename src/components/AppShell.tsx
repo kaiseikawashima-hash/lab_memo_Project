@@ -17,13 +17,13 @@ import { sessionNavLabel } from "@/lib/utils";
 import { BackButton } from "./BackButton";
 
 const navItems = [
-  { href: "/", label: "Dashboard", icon: Home, tone: "text-cyan-200" },
-  { href: "/sessions", label: "Sessions", icon: Library, tone: "text-violet-200" },
-  { href: "/papers", label: "Papers", icon: FileText, tone: "text-sky-200" },
-  { href: "/knowledge-map", label: "Knowledge Map", icon: Network, tone: "text-cyan-200" },
-  { href: "/tags", label: "Tags", icon: Tags, tone: "text-violet-200" },
-  { href: "/search", label: "Search", icon: Search, tone: "text-sky-200" },
-  { href: "/settings", label: "Settings", icon: Settings, tone: "text-slate-300" }
+  { href: "/", label: "ダッシュボード", icon: Home, tone: "text-cyan-200" },
+  { href: "/sessions", label: "発表回", icon: Library, tone: "text-violet-200" },
+  { href: "/papers", label: "論文カード", icon: FileText, tone: "text-sky-200" },
+  { href: "/knowledge-map", label: "知識マップ", icon: Network, tone: "text-cyan-200" },
+  { href: "/tags", label: "タグ一覧", icon: Tags, tone: "text-violet-200" },
+  { href: "/search", label: "検索", icon: Search, tone: "text-sky-200" },
+  { href: "/settings", label: "設定", icon: Settings, tone: "text-slate-300" }
 ];
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
